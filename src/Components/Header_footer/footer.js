@@ -1,6 +1,17 @@
 import React from "react";
+import { CityLogo } from "../Utils/tools";
+import "../../Resources/css/app.css";
 
 const Footer = () => {
-  return <div>Footer</div>;
+  return (
+    <footer className="bck_blue">
+      <div className="footer_logo">
+        <CityLogo link={true} linkTo="/" width="70px" height="70px" />
+      </div>
+      <div className="footer_descl">
+        Mancherster city 2021. All rights reserved
+      </div>
+    </footer>
+  );
 };
 export default Footer;
