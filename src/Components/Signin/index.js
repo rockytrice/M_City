@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { showToastSuccess, showToastError } from "../Utils/tools";
 
 const SignIn = (props) => {
   const [loading, setLoading] = useState(false);
@@ -37,11 +38,12 @@ const SignIn = (props) => {
       .then(() => {
         props.history.push("/dashboard");
         //show success toast
+        showToastSuccess("Welcome Back");
       })
       .catch((err) => {
         setLoading(false);
-        alert(err);
         //show toast message
+        showToastError(err.message);
       });
   };
 

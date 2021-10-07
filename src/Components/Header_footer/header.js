@@ -3,8 +3,26 @@ import { AppBar, Toolbar, Button } from "@mui/material";
 import "../../Resources/css/app.css";
 import { Link } from "react-router-dom";
 import { CityLogo } from "../Utils/tools";
+import {firebase} from '../../firebase';
+import { getAuth } from "firebase/auth";
+import { showToastSuccess, showToastError } from "../Utils/tools";
 
-const Header = () => {
+
+const auth = getAuth(firebase);
+
+const Header = ({ user }) => {
+
+const logoutHandle =()=>{
+  auth.signOut()
+  .then(()=>{
+    showToastSuccess("Logging off")
+  }).catch(error=>{
+    showToastError(error.message)
+  })
+
+}
+
+
   return (
     <AppBar
       position="fixed"
@@ -28,9 +46,17 @@ const Header = () => {
         <Link to="/matches">
           <Button color="inherit">Matches</Button>
         </Link>
-        <Link to="/dashboard">
-          <Button color="inherit">Dashboard</Button>
-        </Link>
+        {/* checking if we do have a user */}
+        {user ? 
+          <>
+          <Link to="/dashboard">
+            <Button color="inherit">Dashboard</Button>
+          </Link>
+          
+            <Button color="inherit" onClick={logoutHandle}>Sign Out</Button>
+          </>
+         : null
+         }
       </Toolbar>
     </AppBar>
   );
