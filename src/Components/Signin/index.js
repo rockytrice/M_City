@@ -3,8 +3,9 @@ import { CircularProgress } from "@mui/material";
 import { Redirect } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-const SignIn = () => {
+const SignIn = (props) => {
   const [loading, setLoading] = useState(false);
   // create configuration of formik. It is like a hook. We pass an object and inside the oject we need at least 3 different properties.
   const formik = useFormik({
@@ -27,8 +28,23 @@ const SignIn = () => {
       setLoading(true);
       // go to server with field values
       console.log(values);
+      submitForm(values);
     },
   });
+  const auth = getAuth();
+  const submitForm = (values) => {
+    signInWithEmailAndPassword(auth, values.email, values.password)
+      .then(() => {
+        props.history.push("/dashboard");
+        //show success toast
+      })
+      .catch((err) => {
+        setLoading(false);
+        alert(err);
+        //show toast message
+      });
+  };
+
   return (
     <div className="container">
       <div className="signin_wrapper" style={{ margin: "100px" }}>
