@@ -7,6 +7,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { showToastSuccess, showToastError } from "../Utils/tools";
 
 const SignIn = (props) => {
+  console.log(props);
   const [loading, setLoading] = useState(false);
   // create configuration of formik. It is like a hook. We pass an object and inside the oject we need at least 3 different properties.
   const formik = useFormik({
@@ -48,51 +49,57 @@ const SignIn = (props) => {
   };
 
   return (
-    <div className="container">
-      <div className="signin_wrapper" style={{ margin: "100px" }}>
-        <form onSubmit={formik.handleSubmit}>
-          <h2>Please Login</h2>
-          <input
-            name="email"
-            placeholder="Email"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-          />
-          {/* error message handling. you get access to the errors array from formik */}
-          {formik.touched.email && formik.errors.email ? (
-            <div className="error_label">{formik.errors.email}</div>
-          ) : null}
-          <input
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.password}
-          />
+    <div>
+      {!props.user ? (
+        <div className="container">
+          <div className="signin_wrapper" style={{ margin: "100px" }}>
+            <form onSubmit={formik.handleSubmit}>
+              <h2>Please Login</h2>
+              <input
+                name="email"
+                placeholder="Email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+              />
+              {/* error message handling. you get access to the errors array from formik */}
+              {formik.touched.email && formik.errors.email ? (
+                <div className="error_label">{formik.errors.email}</div>
+              ) : null}
+              <input
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+              />
 
-          {formik.touched.password && formik.errors.password ? (
-            <div className="error_label">{formik.errors.password}</div>
-          ) : null}
+              {formik.touched.password && formik.errors.password ? (
+                <div className="error_label">{formik.errors.password}</div>
+              ) : null}
 
-          {loading ? (
-            <CircularProgress
-              color="secondary"
-              className="progress"
-              style={{ background: "none" }}
-            />
-          ) : (
-            <button type="submit">Login</button>
-          )}
+              {loading ? (
+                <CircularProgress
+                  color="secondary"
+                  className="progress"
+                  style={{ background: "none" }}
+                />
+              ) : (
+                <button type="submit">Login</button>
+              )}
 
-          {/* {loading ? (
+              {/* {loading ? (
             <CircularProgress color="secondary" className="progress" />
           ) : (
             <button type="submit">Login</button>
           )} */}
-        </form>
-      </div>
+            </form>
+          </div>
+        </div>
+      ) : (
+        <Redirect to={"/dashboard"} />
+      )}
     </div>
   );
 };
